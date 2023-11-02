@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Define the desired path where you want to copy the files
-        TARGET_PATH = 'D:\D drive\Jenkins_Files'
+        TARGET_PATH = 'D:/D drive/Jenkins_Files'
     }
 
     stages {
