@@ -11,7 +11,7 @@ pipeline {
                 echo "Current branch is: ${env.BRANCH_NAME}"
 
                 when {
-                    expression { env.BRANCH_NAME == 'dev' }
+                    expression { ${env.BRANCH_NAME} == 'dev' }
                 }
                 steps {
                     script {
