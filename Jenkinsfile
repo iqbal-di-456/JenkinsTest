@@ -8,7 +8,8 @@ pipeline {
                 // For example, if you're using Maven for a Java project
                 // sh 'mvn clean install'
                 echo 'building the application...'
-        }
+            }
+		}
 
         stage('Test') {
             steps {
