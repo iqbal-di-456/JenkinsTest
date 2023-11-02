@@ -14,6 +14,9 @@ pipeline {
                     if (env.BRANCH_NAME == 'dev') {
                         echo 'Condition Executed Successfully...'
                         }
+                    else {
+                        echo "Skipping Condition for ${env.BRANCH_NAME} env"
+                        }
                     }
             }
 		}
