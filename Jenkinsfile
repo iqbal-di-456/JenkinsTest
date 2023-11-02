@@ -34,9 +34,11 @@ pipeline {
     post {
         success {
             // You can add post-build actions here for success
+            echo 'build was success'
         }
         failure {
             // You can add post-build actions here for failure
+            echo 'build failed'
         }
     }
 
