@@ -9,6 +9,15 @@ pipeline {
                 // sh 'mvn clean install'
                 echo 'building the application...'
                 echo "Current branch is: ${env.BRANCH_NAME}"
+
+                when {
+                    expression { env.BRANCH_NAME == 'dev' }
+                }
+                steps {
+                    script {
+                        echo 'Condition Executed Successfully...'
+                    }
+                }
             }
 		}
 
