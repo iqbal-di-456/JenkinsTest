@@ -10,14 +10,11 @@ pipeline {
                 echo 'building the application...'
                 echo "Current branch is: ${env.BRANCH_NAME}"
 
-                when {
-                    expression { ${env.BRANCH_NAME} == 'dev' }
-                }
-                steps {
-                    script {
+                script {
+                    if (env.BRANCH_NAME == 'dev') {
                         echo 'Condition Executed Successfully...'
+                        }
                     }
-                }
             }
 		}
 
