@@ -1,7 +1,29 @@
 pipeline {
     agent any
 
+    environment {
+        // Define the desired path where you want to copy the files
+        TARGET_PATH = 'D:\D drive\Jenkins_Files'
+    }
+
     stages {
+        
+        stage('Checkout') {
+            steps {
+                // This step checks out the code from the Git repository
+                git(url: 'https://github.com/iqbal-di-456/JenkinsTest.git', branch: "${env.BRANCH_NAME}")
+            }
+        }
+
+         stage('Copy Files') {
+            steps {
+                // This step copies the files to the desired path
+                script {
+                    sh "cp -r * ${env.TARGET_PATH}"
+                }
+            }
+        }
+
          stage('Build') {
             steps {
                 // You can add your build steps here
