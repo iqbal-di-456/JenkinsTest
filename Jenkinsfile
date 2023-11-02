@@ -2,29 +2,38 @@ pipeline {
     agent any
 
     environment {
-        // Define the desired path where you want to copy the files
-        TARGET_PATH = 'D:/D drive/Jenkins_Files'
+        // Define Git repository URL and desired destination path
+        GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
+        DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
     }
 
     stages {
-        
-        stage('Checkout') {
-            steps {
-                // This step checks out the code from the Git repository
-                git(url: 'https://github.com/iqbal-di-456/JenkinsTest.git', branch: "${env.BRANCH_NAME}")
-            }
-        }
 
-         stage('Copy Files') {
+        stage('Clone Repository') {
             steps {
-                // This step copies the files to the desired path
                 script {
-                    sh "cp -r * ${env.TARGET_PATH}"
+                    // Clone the repository
+                    checkout([$class: 'GitSCM', userRemoteConfigs: [[url: env.GIT_REPO_URL]]])
                 }
             }
         }
 
-         stage('Build') {
+        stage('Copy Files') {
+            steps {
+                script {
+                    // Define source path (current workspace)
+                    def sourcePath = env.WORKSPACE
+
+                    // Create the destination directory if it doesn't exist
+                    bat "if not exist \"${env.DESTINATION_PATH}\" mkdir \"${env.DESTINATION_PATH}\""
+
+                    // Copy files from source to destination
+                    bat "xcopy /S /Y \"${sourcePath}\" \"${env.DESTINATION_PATH}\""
+                }
+            }
+        }
+
+        stage('Build') {
             steps {
                 // You can add your build steps here
                 // For example, if you're using Maven for a Java project
