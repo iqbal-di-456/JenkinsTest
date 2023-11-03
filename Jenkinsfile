@@ -1,11 +1,13 @@
 pipeline {
     agent any
 
-    environment {
-        // Define Git repository URL and desired destination path
-        GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
-        DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
-    }
+    /*
+        environment {
+            // Define Git repository URL and desired destination path
+            GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
+            DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
+        }
+    */
 
     stages {
 
@@ -13,7 +15,9 @@ pipeline {
             steps {
                 script {
                     // Clone the repository
-                    checkout([$class: 'GitSCM', userRemoteConfigs: [[url: env.GIT_REPO_URL]]])
+                    withCredentials([usernamePassword(credentialsId: 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c', usernameVariable: 'miqbal@datainnovations.com', passwordVariable: 'Shinigami@456')]) {
+                        checkout([$class: 'GitSCM', branches: [[name: "${env.BRANCH_NAME}"]], userRemoteConfigs: [[url: 'https://github.com/iqbal-di-456/JenkinsTest.git', credentialsId: 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c']]])
+                    }
                 }
             }
         }
