@@ -1,13 +1,11 @@
 pipeline {
     agent any
 
-    /*
-        environment {
-            // Define Git repository URL and desired destination path
-            GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
-            DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
-        }
-    */
+    environment {
+        // Define Git repository URL and desired destination path
+        // GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
+        DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
+    }
 
     stages {
 
