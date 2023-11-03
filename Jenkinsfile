@@ -51,6 +51,18 @@ pipeline {
                         echo "Skipping Condition for ${env.BRANCH_NAME} env"
                         }
                     }
+
+                script {
+                    if (env.BRANCH_NAME == 'dev') {
+                        // Set a variable with the desired value
+                        def myVariable = 'run-dev-build-script'
+                        
+                        // Print the variable
+                        echo "http://3.18.204.118:8000/${myVariable}"
+                    } else {
+                        echo "Branch name is not 'dev'."
+                    }
+                }
             }
 		}
 
