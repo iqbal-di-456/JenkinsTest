@@ -41,7 +41,8 @@ pipeline {
                 // For example, if you're using Maven for a Java project
                 // sh 'mvn clean install'
                 echo 'building the application...'
-                echo "Current branch is: ${env.BRANCH_NAME}"
+                echo "Current branch is: ${env.BRANCH_NAME}  - usign BRANCH_NAME tag"
+                echo "Current branch is: ${env.GIT_BRANCH}  - usign GIT_BRANCH tag"
 
                 script {
                     if (env.BRANCH_NAME == 'dev') {
