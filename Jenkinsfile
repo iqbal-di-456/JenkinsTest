@@ -48,6 +48,9 @@ pipeline {
                     if (env.BRANCH_NAME == 'dev') {
                         echo 'Condition Executed Successfully...'
                         }
+                    if (env.BRANCH_NAME == 'qa') {
+                        echo 'Condition Executed Successfully...'
+                        }
                     else {
                         echo "Skipping Condition for ${env.BRANCH_NAME} env"
                         }
@@ -64,7 +67,7 @@ pipeline {
                     }
                     if (env.BRANCH_NAME == 'qa') {
                         // Set a variable with the desired value
-                        def myVariable = 'run-dev-build-script'
+                        def myVariable = 'run-qa-build-script'
                         
                         // Print the variable
                         echo "http://3.18.204.118:8000/${myVariable}"
