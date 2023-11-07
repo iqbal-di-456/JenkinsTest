@@ -67,7 +67,7 @@ pipeline {
                     }
                     if (env.BRANCH_NAME == 'qa') {
                         // Set a variable with the desired value
-                        def myVariable = 'run-dev-build-script'
+                        def myVariable = 'run-qa-build-script'
                         
                         // Print the variable
                         echo "http://3.18.204.118:8000/${myVariable}"
