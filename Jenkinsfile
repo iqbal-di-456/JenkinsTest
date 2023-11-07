@@ -45,6 +45,7 @@ pipeline {
                 echo "Current branch is: ${env.GIT_BRANCH}  - usign GIT_BRANCH tag"
 
                 script {
+                    echo 'Testing script'
                     if (env.BRANCH_NAME == 'dev') {
                         echo 'Condition Executed Successfully...'
                         }
