@@ -109,7 +109,7 @@ pipeline {
                 script {
                     def test = env.BRANCH_NAME
                     // Call the method from the .js file
-                    bat '''node run-'\''${test}'\''-script.js'''
+                    bat '''node run-dev-script.js'''
                 }
             }
         }
