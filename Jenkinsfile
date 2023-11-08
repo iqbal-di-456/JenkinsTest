@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     options {
-          buildBlocker (useBuildBlocker: true, blockLevel: 'GLOBAL', scanQueueFor: 'DISABLED', blockingJobs: 'my-test-jenkins/.*')
+          buildBlocker (useBuildBlocker: true, blockLevel: 'GLOBAL', scanQueueFor: 'ENABLED', blockingJobs: 'my-test-jenkins/.*')
     }
 
     environment {
