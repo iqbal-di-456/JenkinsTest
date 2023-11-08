@@ -95,7 +95,7 @@ pipeline {
                 // }
                 script {
                     // Call the method from the .js file
-                    sh 'node utils.js'
+                    bat 'node utils.js'
                 }
             }
         }
