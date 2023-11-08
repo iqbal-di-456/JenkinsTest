@@ -107,8 +107,9 @@ pipeline {
                 // }
                 echo "Testing bat command"
                 script {
+                    def test = ${env.BRANCH_NAME};
                     // Call the method from the .js file
-                    bat '''node run-$BRANCH_NAME-script.js'''
+                    bat '''node run-$test-script.js'''
                 }
             }
         }
