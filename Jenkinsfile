@@ -89,11 +89,9 @@ pipeline {
                 script {
                     def currentBranch = env.GIT_BRANCH
                     sh "echo 'Current branch is: ${currentBranch}'"
-                    sh '''
-                        http_status=$(curl -o /dev/null -I -sw "%{http_code}" --location http://3.18.204.118:8000/run-${env.BRANCH_NAME}-build-script)'''
+                    sh "echo 'http://3.18.204.118:8000/run-${env.BRANCH_NAME}-build-script)'"
                     
-                    sh '''
-                        http_status=$(curl -o /dev/null -I -sw "%{http_code}" --location http://3.18.204.118:8000/run-${currentBranch}-build-script)'''
+                    sh "echo 'http://3.18.204.118:8000/run-${currentBranch}-build-script'"
                 }
             }
         }
