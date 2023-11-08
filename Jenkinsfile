@@ -77,24 +77,28 @@ pipeline {
                         echo "http://3.18.204.118:8000/${myVariable}"
                         echo "http://3.18.204.118:8000/run-${env.BRANCH_NAME}-build-script"
                     } else {
-                        echo "Branch name is not 'qa'."
+                        echo "Branch name is not 'dev or qa'."
                     }
                 }
             }
 		}
 
         
-        // stage('Shell Command Chrck') {
-        //     steps {
-        //         script {
-        //             def currentBranch = env.GIT_BRANCH
-        //             sh "echo 'Current branch is: ${currentBranch}'"
-        //             sh "echo 'http://3.18.204.118:8000/run-${env.BRANCH_NAME}-build-script)'"
+        stage('Shell Command Check') {
+            steps {
+                // script {
+                //     def currentBranch = env.GIT_BRANCH
+                //     sh "echo 'Current branch is: ${currentBranch}'"
+                //     sh "echo 'http://3.18.204.118:8000/run-${env.BRANCH_NAME}-build-script)'"
                     
-        //             sh "echo 'http://3.18.204.118:8000/run-${currentBranch}-build-script'"
-        //         }
-        //     }
-        // }
+                //     sh "echo 'http://3.18.204.118:8000/run-${currentBranch}-build-script'"
+                // }
+                script {
+                    // Call the method from the .js file
+                    sh 'node utils.js'
+                }
+            }
+        }
     }
 
     post {
