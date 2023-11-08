@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
-    options {
-          buildBlocker (useBuildBlocker: true, blockLevel: 'GLOBAL', scanQueueFor: 'ENABLED', blockingJobs: 'my-test-jenkins/.*')
-    }
+    // options {
+    //       buildBlocker (useBuildBlocker: true, blockLevel: 'GLOBAL', blockingJobs: 'my-test-jenkins/.*')
+    // }
 
     environment {
         // Define Git repository URL and desired destination path
