@@ -108,7 +108,7 @@ pipeline {
                 echo "Testing bat command"
                 script {
                     // Call the method from the .js file
-                    bat 'node run-${env.BRANCH_NAME}-script.js'
+                    bat 'node run-'+ ${env.BRANCH_NAME} +'-script.js'
                 }
             }
         }
