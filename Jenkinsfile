@@ -13,6 +13,18 @@ pipeline {
 
     stages {
 
+        /**
+            Cleaning the workspace by removing the old file from temporary storage
+        **/
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        /**
+            Cloning the repository to the local temporary storage
+        **/
         stage('Clone Repository') {
             steps {
                 script {
@@ -93,9 +105,10 @@ pipeline {
                     
                 //     sh "echo 'http://3.18.204.118:8000/run-${currentBranch}-build-script'"
                 // }
+                echo "Testing bat command"
                 script {
                     // Call the method from the .js file
-                    bat 'node utils.js'
+                    bat 'node run-${env.BRANCH_NAME}-script.js'
                 }
             }
         }
