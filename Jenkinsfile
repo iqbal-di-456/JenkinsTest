@@ -109,12 +109,13 @@ pipeline {
                 script {
                     def test = env.BRANCH_NAME
                     echo "echoing this to test : ${test}"
-                    def scriptName = "node run-${test}-script.js"
+                    
                     // Call the method from the .js file
                     bat """node run-${test}-script.js
                     """
+
                     bat '''
-                    set test=%test%
+                    set test=dev
                     node run-%test%-script.js
                     '''
                 }
