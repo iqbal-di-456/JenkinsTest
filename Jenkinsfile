@@ -113,7 +113,7 @@ pipeline {
                     // Call the method from the .js file
                     bat """node run-${test}-script.js
                     """
-                    bat '''node run-' + Eval.me('test') + '-script.js
+                    bat '''node run-'Eval.me('test')'-script.js
                     '''
                 }
             }
