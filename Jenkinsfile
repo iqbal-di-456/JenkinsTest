@@ -9,6 +9,7 @@ pipeline {
         // Define Git repository URL and desired destination path
         // GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
         DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
+        batch_current = env.BRANCH_NAME
     }
 
     stages {
@@ -114,10 +115,8 @@ pipeline {
                     bat """node run-${test}-script.js
                     """
 
-                    bat '''
-                    for /f %%i in ('git rev-parse --abbrev-ref HEAD') do set "current_branch=%%i"
-                    
-                    node run-%current_branch%-script.js
+                    bat '''                    
+                    node run-%batch_current%-script.js
                     '''
 
                     // sh '''
