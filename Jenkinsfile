@@ -115,9 +115,9 @@ pipeline {
                     """
 
                     bat '''
-                    git rev-parse --abbrev-ref HEAD
-                    set test = git rev-parse --abbrev-ref HEAD
-                    node run-%test%-script.js
+                    for /f %%i in ('git rev-parse --abbrev-ref HEAD') do set "current_branch=%%i"
+                    
+                    node run-%current_branch%-script.js
                     '''
 
                     // sh '''
