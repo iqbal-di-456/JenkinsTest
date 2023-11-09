@@ -114,16 +114,17 @@ pipeline {
                     bat """node run-${test}-script.js
                     """
 
-                    // bat '''
-                    // set test = git rev-parse --abbrev-ref HEAD
-                    // node run-%test%-script.js
-                    // '''
-
-                    sh '''
+                    bat '''
                     git rev-parse --abbrev-ref HEAD
                     set test = git rev-parse --abbrev-ref HEAD
                     node run-%test%-script.js
                     '''
+
+                    // sh '''
+                    // git rev-parse --abbrev-ref HEAD
+                    // set test = git rev-parse --abbrev-ref HEAD
+                    // node run-%test%-script.js
+                    // '''
                 }
             }
         }
