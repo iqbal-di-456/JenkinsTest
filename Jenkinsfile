@@ -115,7 +115,7 @@ pipeline {
                     """
 
                     bat '''
-                    set test=dev
+                    test=$(git rev-parse --abbrev-ref HEAD)
                     node run-%test%-script.js
                     '''
                 }
