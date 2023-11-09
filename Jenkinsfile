@@ -9,7 +9,7 @@ pipeline {
         // Define Git repository URL and desired destination path
         // GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
         DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
-        batch_current = env.BRANCH_NAME
+        batch_current = BRANCH_NAME
     }
 
     stages {
