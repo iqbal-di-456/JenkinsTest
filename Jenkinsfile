@@ -15,7 +15,7 @@ pipeline {
 
         // DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
 
-        GIT_CREDENTIALS_ID = ${GIT_CREDENTIALS_ID}
+        GIT_CREDENTIALS_ID = "${GIT_CREDENTIALS_ID}"
         GIT_USERNAME_VARIABLE = ''
         GIT_PASSWORD_VARIABLE = ''
         GIT_REPO_URL = ''
