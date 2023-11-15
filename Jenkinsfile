@@ -28,55 +28,15 @@ pipeline {
             }
         }
 
-        // /**
-		// 	Defining the credentials to be used based on the current Branch
-		// **/
-		// stage('Credentials') {
-        //     when {
-        //         expression { return env.BRANCH_NAME == 'dev' || env.BRANCH_NAME == 'qa' }
-        //     }
-        //     steps {
-        //         script {
-        //             // Select credentials based on the branch
-		// 			if (env.BRANCH_NAME == 'dev') {
-        //                 GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
-        //                 GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
-        //                 GIT_PASSWORD_VARIABLE = 'Shinigami@456'
-        //                 GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
-        //                 DESTINATION_PATH = 'D:/Test'
-		// 			} else if (env.BRANCH_NAME == 'qa') {
-        //                 GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
-        //                 GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
-        //                 GIT_PASSWORD_VARIABLE = 'Shinigami@456'
-        //                 GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
-        //                 DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
-        //             }
-        //             // Set the credential as environment variables for later stages
-        //                 env.GIT_CREDENTIALS_ID = GIT_CREDENTIALS_ID
-        //                 env.GIT_USERNAME_VARIABLE = GIT_USERNAME_VARIABLE
-        //                 env.GIT_PASSWORD_VARIABLE = GIT_PASSWORD_VARIABLE
-        //                 env.GIT_REPO_URL = GIT_REPO_URL
-        //                 env.DESTINATION_PATH = DESTINATION_PATH
-        //         }
-		//     }
-        // }
-
         /**
             Cloning the repository to the local temporary storage
         **/
         stage('Clone Repository') {
             steps {
                 script {
-                     // Echo to verify the value of GIT_CREDENTIALS_ID
-                    echo "Credential_ID before withCredentials: ${env.GIT_CREDENTIALS_ID}"
-
                     // Clone the repository using credentials
                     withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS_ID, usernameVariable: env.GIT_USERNAME_VARIABLE, passwordVariable: env.GIT_PASSWORD_VARIABLE)]) {
-                        checkout([$class: 'GitSCM', branches: [[name: "${env.BRANCH_NAME}"]], userRemoteConfigs: [[url: env.GIT_REPO_URL, credentialsId: env.GIT_CREDENTIALS_ID]]])
-                        {
-                            echo "Username: ${env.GIT_USERNAME_VARIABLE}"
-                            echo "Password: ${env.GIT_PASSWORD_VARIABLE}"
-                        }
+                        checkout([$class: 'GitSCM', branches: [[name: "${env.BRANCH_NAME}"]], userRemoteConfigs: [[url: GIT_REPO_URL, credentialsId: env.GIT_CREDENTIALS_ID]]])
                     }
                 }
             }
