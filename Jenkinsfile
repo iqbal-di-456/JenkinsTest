@@ -81,6 +81,7 @@ pipeline {
                 script {
                      // Echo to verify the value of GIT_CREDENTIALS_ID
                     echo "Credential_ID before withCredentials: ${env.GIT_CREDENTIALS_ID}"
+                    echo "Username before withCredentials: ${env.GIT_USERNAME_VARIABLE}"
 
                     // Clone the repository using credentials
                     withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS_ID, usernameVariable: env.GIT_USERNAME_VARIABLE, passwordVariable: env.GIT_PASSWORD_VARIABLE)]) {
