@@ -1,0 +1,227 @@
+pipeline {
+    agent any
+
+    options {
+          buildBlocker (useBuildBlocker: true, blockLevel: 'GLOBAL', scanQueueFor: 'DISABLED', blockingJobs: 'Mobile/.*')
+    }
+    environment {
+        AWS_ACCESS_KEY_ID = ''
+        AWS_SECRET_ACCESS_KEY = ''
+        AWS_ACCOUNT_ID = ""
+        CLOUDFRONT_DISTRIBUTION_ID = "" 
+        S3_BUCKET = ""
+    }
+    stages {
+        /**
+            Cleaning the workspace by removing the old file from temporary storage
+        **/
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+        /**
+            Cloning the repository to the local temporary storage
+        **/
+        stage('Git Clone Mobile App'){
+            steps {
+                git credentialsId: "33e6bfd4-13a1-4441-8e30-af60da877050" ,  url: 'https://gitserv:3000/DataInnovations/MobileApp'
+            }
+        }
+
+        /**
+            Getting the lastest code, compress the file using 7zip and moving the file to EC2 instance
+        **/
+        stage('SCP copy Mobile App') {
+            steps {
+                script {
+                    sshagent(['EC2-Mac']) {
+                        sh '''
+                            git fetch 
+                            git checkout dev
+                            git pull
+                            7z a -r mobileapp.zip *
+                            scp mobileapp.zip ec2-user@10.7.0.58:~/Desktop/
+                        '''
+                    }
+                }
+            }
+        }
+
+        /**
+            SSH into the Ec2 instance, Unzip the file, install the flutter dependencies, run unit tests cases and building the release and debug build
+
+            In the second part of this stage, we get the http status code form the api call we make
+            We will 2 different statuses from the api call 200 and 500.
+            based on the statuses, we are making a decision whether to continue or exit the build process
+        **/
+		
+		/**
+			Defining the credentials to be used based on the current Branch
+		**/
+		stage('Credentials') {
+            when {
+                expression { return env.BRANCH_NAME == 'dev' || env.BRANCH_NAME == 'qa' || env.BRANCH_NAME == 'beta' || env.BRANCH_NAME == 'master' }
+            }
+            steps {
+                script {
+                    // Select credentials based on the branch
+					if (env.BRANCH_NAME == 'dev') {
+                        AWS_ACCESS_KEY_ID = credentials('Jenkins-User')
+						AWS_SECRET_ACCESS_KEY = credentials('Jenkins-User')
+						AWS_ACCOUNT_ID = "521607829036"
+						CLOUDFRONT_DISTRIBUTION_ID = "E2E0961TQEUIGE"
+						S3_BUCKET = "di-mobile-app-versions"
+					} else if (env.BRANCH_NAME == 'qa') {
+                        AWS_ACCESS_KEY_ID = credentials('Jenkins-User-QA')
+                        AWS_SECRET_ACCESS_KEY = credentials('Jenkins-User-QA')
+                        AWS_ACCOUNT_ID = "239611646522"
+                        CLOUDFRONT_DISTRIBUTION_ID = "E3KM9Y4YY79SB2"
+                        S3_BUCKET = "di-mobile-app-versions-verval"
+                    } else if (env.BRANCH_NAME == 'beta') {
+                        AWS_ACCESS_KEY_ID = credentials('Jenkins-User-Beta')
+						AWS_SECRET_ACCESS_KEY = credentials('Jenkins-User-Beta')
+						AWS_ACCOUNT_ID = "003185359767"
+						CLOUDFRONT_DISTRIBUTION_ID = "E1TYF7WH9CLEPL" //
+						S3_BUCKET = "di-mobile-app-versions-beta"
+                    } else if (env.BRANCH_NAME == 'master') {
+                        AWS_ACCESS_KEY_ID = credentials('Jenkins-User-Prod')
+						AWS_SECRET_ACCESS_KEY = credentials('Jenkins-User-Prod')
+						AWS_ACCOUNT_ID = "139532372547"
+						CLOUDFRONT_DISTRIBUTION_ID = "E1CWVAFT75Z1JF"
+						S3_BUCKET = "di-mobile-app-versions-prod"
+                    }
+                }
+            }
+		}
+        stage('Deploy MobileApp to Remote Server') {
+            steps {
+                script {
+                    
+                    sshagent(['EC2-Mac']) {
+                         sh 'ssh ec2-user@10.7.0.58 < script_build.sh'
+                    }
+                    sh '''
+                        http_status=$(curl -o /dev/null -I -sw "%{http_code}" --location http://10.7.0.58:8000/run-dev-build-script)
+                        if [ "$http_status" -eq 500 ]; then
+                            echo "Received HTTP status code 500. Exiting with an error."
+                            exit 1  # Exit the script with an error code
+                        else
+                            echo "Received HTTP status code $http_status. Continue with the job."
+                        fi
+                    '''
+                }
+            }
+        }
+        /**
+            Cleaning the workspace by removing the old file from temporary storage
+        **/
+        stage('Clean Workspace for Mobile Automation') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        /**
+            Cloning the repository to the local temporary storage
+        **/
+        stage('Git Clone MobileAutomation'){
+            steps {
+                git credentialsId: "33e6bfd4-13a1-4441-8e30-af60da877050" ,  url: 'https://gitserv:3000/DataInnovations/MobileAppAutomation'
+            }
+        }
+
+        /**
+            Getting the lastest code, compress the file using 7zip and moving the file to EC2 instance
+        **/
+        stage('SCP copy for MobileAutomation') {
+            steps {
+                script {
+                    sshagent(['EC2-Mac']) {
+                        sh '''
+                            git checkout master
+                            git pull origin master
+                            7z a -r MobileAppAutomation.zip *
+                            scp MobileAppAutomation.zip ec2-user@10.7.0.58:~/Documents/
+                        '''
+                    }
+                }
+            }
+        }
+        /**
+            running the automation scripts
+            the script.sh file exists inside the mobile automation repository
+        **/
+       // commenting this out for testing purposes 
+        // stage('Deploy to Remote Server for MobileAutomation') {
+        //     steps {
+        //         script { 
+        //             sshagent(['EC2-mac-labgps']) {
+        //                  sh 'ssh ec2-user@10.7.0.58 < script.sh'
+        //             }
+        //         }
+        //     }
+        // }
+
+        /**
+            Cleaning the workspace by removing the old file from temporary storage
+        **/
+         stage('Clean Workspace before deployment') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        /**
+            Cloning the repository to the local temporary storage
+        **/
+        stage('Git Clone Mobile App for deployment'){
+            steps {
+                git credentialsId: "33e6bfd4-13a1-4441-8e30-af60da877050" ,  url: 'https://gitserv:3000/DataInnovations/MobileApp'
+            }
+        }
+   
+        /**
+            Cloning the repository to the local temporary storage
+        **/
+        stage('Pulling the script file') {
+            steps {
+                script {
+                    sshagent(['EC2-Mac']) {
+                        sh '''
+                            git fetch 
+                            git checkout dev
+                            git pull
+                        '''
+                    }
+                }
+            }
+        }
+        /**
+            SSH into the Ec2 instance,and deploying the build created in the previous steps to browstack applive, app automate, playstore and testflight.
+        **/
+        stage('Deploy to Remote Server for MobileApp deployment') {
+            steps {
+                script { 
+                    sshagent(['EC2-mac-labgps']) {
+                         sh 'ssh ec2-user@10.7.0.58 < script_deploy.sh'
+                    }
+                     sh '''
+                        http_status=$(curl -o /dev/null -I -sw "%{http_code}" --location http://10.7.0.58:8000/run-dev-deploy-script)
+                        if [ "$http_status" -eq 500 ]; then
+                            echo "Received HTTP status code 500. Exiting with an error."
+                            exit 1  # Exit the script with an error code
+                        else
+                            echo "Received HTTP status code $http_status. Continue with the job."
+                        fi
+                        cd appcast_config
+                        aws s3 sync --cache-control 'no-cache' . s3://${S3_BUCKET} --delete
+                        echo "push finished"
+                        echo "calling create invalidation"
+                        aws cloudfront create-invalidation --distribution-id ${CLOUDFRONT_DISTRIBUTION_ID} --paths "/*"
+                    '''
+                }
+            }
+        }
+    }
+}
