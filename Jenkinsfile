@@ -16,18 +16,18 @@ pipeline {
         // DESTINATION_PATH = ''
 
         when {
-                expression { return env.BRANCH_NAME == 'dev' || env.BRANCH_NAME == 'qa' }
+                expression { return BRANCH_NAME == 'dev' || BRANCH_NAME == 'qa' }
             }
             steps {
                 script {
                     // Select credentials based on the branch
-					if (env.BRANCH_NAME == 'dev') {
+					if (BRANCH_NAME == 'dev') {
                         GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
                         GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
                         GIT_PASSWORD_VARIABLE = 'Shinigami@456'
                         GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
                         DESTINATION_PATH = 'D:/Test'
-					} else if (env.BRANCH_NAME == 'qa') {
+					} else if (BRANCH_NAME == 'qa') {
                         GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
                         GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
                         GIT_PASSWORD_VARIABLE = 'Shinigami@456'
