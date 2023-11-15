@@ -52,11 +52,11 @@ pipeline {
                         DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
                     }
                     // Set the credential as environment variables for later stages
-                        env.GIT_CREDENTIALS_ID = GIT_CREDENTIALS_ID
-                        env.GIT_USERNAME_VARIABLE = GIT_USERNAME_VARIABLE
-                        env.GIT_PASSWORD_VARIABLE = GIT_PASSWORD_VARIABLE
-                        env.GIT_REPO_URL = GIT_REPO_URL
-                        env.DESTINATION_PATH = DESTINATION_PATH
+                        // env.GIT_CREDENTIALS_ID = GIT_CREDENTIALS_ID
+                        // env.GIT_USERNAME_VARIABLE = GIT_USERNAME_VARIABLE
+                        // env.GIT_PASSWORD_VARIABLE = GIT_PASSWORD_VARIABLE
+                        // env.GIT_REPO_URL = GIT_REPO_URL
+                        // env.DESTINATION_PATH = DESTINATION_PATH
                 }
 		    }
         }
@@ -68,8 +68,13 @@ pipeline {
             steps {
                 script {
                     // Clone the repository using credentials
+                    echo "Credential_ID : ${env.GIT_CREDENTIALS_ID}"
                     withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS_ID, usernameVariable: env.GIT_USERNAME_VARIABLE, passwordVariable: env.GIT_PASSWORD_VARIABLE)]) {
                         checkout([$class: 'GitSCM', branches: [[name: "${env.BRANCH_NAME}"]], userRemoteConfigs: [[url: GIT_REPO_URL, credentialsId: env.GIT_CREDENTIALS_ID]]])
+                        {
+                            echo "Username: ${env.GIT_USERNAME_VARIABLE}"
+                            echo "Password: ${env.GIT_PASSWORD_VARIABLE}"
+                        }
                     }
                 }
             }
