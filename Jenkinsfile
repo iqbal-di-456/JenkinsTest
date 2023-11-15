@@ -45,6 +45,7 @@ pipeline {
             }
             steps {
                 script {
+                    echo "Checking Branch name : ${env.BRANCH_NAME}"
                     // Select credentials based on the branch
 					if (env.BRANCH_NAME == 'dev') {
                         GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
