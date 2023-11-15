@@ -51,8 +51,9 @@ pipeline {
                         GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
                         DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
                     }
-            }
-		}
+                }
+		    }
+        }
 
         /**
             Cloning the repository to the local temporary storage
