@@ -62,7 +62,7 @@ pipeline {
             steps {
                 script {
                     // Clone the repository using credentials
-                    withCredentials([usernamePassword(credentialsId: ${env.GIT_CREDENTIALS_ID}, usernameVariable: env.GIT_USERNAME_VARIABLE, passwordVariable: env.GIT_PASSWORD_VARIABLE)]) {
+                    withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS_ID, usernameVariable: env.GIT_USERNAME_VARIABLE, passwordVariable: env.GIT_PASSWORD_VARIABLE)]) {
                         checkout([$class: 'GitSCM', branches: [[name: "${env.BRANCH_NAME}"]], userRemoteConfigs: [[url: GIT_REPO_URL, credentialsId: env.GIT_CREDENTIALS_ID]]])
                     }
                 }
