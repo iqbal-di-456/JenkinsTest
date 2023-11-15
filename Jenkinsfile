@@ -64,18 +64,6 @@ pipeline {
                 echo "Current branch is: ${env.GIT_BRANCH}  - usign GIT_BRANCH tag"
 
                 script {
-                    if (env.BRANCH_NAME == 'dev') {
-                        echo 'Condition Executed Successfully...'
-                        }
-                    if (env.BRANCH_NAME == 'qa') {
-                        echo 'Condition Executed Successfully...'
-                        }
-                    else {
-                        echo "Skipping Condition for ${env.BRANCH_NAME} env"
-                        }
-                    }
-
-                script {
                     if (env.BRANCH_NAME == 'dev' || env.BRANCH_NAME == 'qa') {
                             def myVariable = env.BRANCH_NAME == 'dev' ? 'run-dev-build-script' : 'run-qa-build-script'
                             echo "URL using myVariable: http://3.18.204.118:8000/${myVariable}"
