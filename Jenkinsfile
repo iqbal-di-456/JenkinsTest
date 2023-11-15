@@ -8,12 +8,20 @@ pipeline {
     environment {
         // Define Git repository URL and desired destination path
         // Credentials for cloning the repository
-        GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
-        GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
-        GIT_PASSWORD_VARIABLE = 'Shinigami@456'
-        GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
+        // GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
+        // GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
+        // GIT_PASSWORD_VARIABLE = 'Shinigami@456'
+        // GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
 
-        DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
+        // DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
+
+        GIT_CREDENTIALS_ID = ''
+        GIT_USERNAME_VARIABLE = ''
+        GIT_PASSWORD_VARIABLE = ''
+        GIT_REPO_URL = ''
+
+        DESTINATION_PATH = ''
+
         batch_current = "${env.BRANCH_NAME}"
     }
 
@@ -28,38 +36,41 @@ pipeline {
             }
         }
 
-        // /**
-		// 	Defining the credentials to be used based on the current Branch
-		// **/
-		// stage('Credentials') {
-        //     when {
-        //         expression { return env.BRANCH_NAME == 'dev' || env.BRANCH_NAME == 'qa' }
-        //     }
-        //     steps {
-        //         script {
-        //             // Select credentials based on the branch
-		// 			if (env.BRANCH_NAME == 'dev') {
-        //                 GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
-        //                 GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
-        //                 GIT_PASSWORD_VARIABLE = 'Shinigami@456'
-        //                 GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
-        //                 DESTINATION_PATH = 'D:/Test'
-		// 			} else if (env.BRANCH_NAME == 'qa') {
-        //                 GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
-        //                 GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
-        //                 GIT_PASSWORD_VARIABLE = 'Shinigami@456'
-        //                 GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
-        //                 DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
-        //             }
-        //             // Set the credential as environment variables for later stages
-        //                 env.GIT_CREDENTIALS_ID = GIT_CREDENTIALS_ID
-        //                 env.GIT_USERNAME_VARIABLE = GIT_USERNAME_VARIABLE
-        //                 env.GIT_PASSWORD_VARIABLE = GIT_PASSWORD_VARIABLE
-        //                 env.GIT_REPO_URL = GIT_REPO_URL
-        //                 env.DESTINATION_PATH = DESTINATION_PATH
-        //         }
-		//     }
-        // }
+        /**
+			Defining the credentials to be used based on the current Branch
+		**/
+		stage('Credentials') {
+            when {
+                expression { return env.BRANCH_NAME == 'dev' || env.BRANCH_NAME == 'qa' }
+            }
+            steps {
+                script {
+                    // Select credentials based on the branch
+					if (env.BRANCH_NAME == 'dev') {
+                        GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
+                        GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
+                        GIT_PASSWORD_VARIABLE = 'Shinigami@456'
+                        GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
+                        DESTINATION_PATH = 'D:/Test'
+					} else if (env.BRANCH_NAME == 'qa') {
+                        GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
+                        GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
+                        GIT_PASSWORD_VARIABLE = 'Shinigami@456'
+                        GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
+                        DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
+                    }
+                    echo "Credential_ID in the Credentials stage: ${env.GIT_CREDENTIALS_ID}"
+                    // Set the credential as environment variables for later stages
+                        env.GIT_CREDENTIALS_ID = GIT_CREDENTIALS_ID
+                        env.GIT_USERNAME_VARIABLE = GIT_USERNAME_VARIABLE
+                        env.GIT_PASSWORD_VARIABLE = GIT_PASSWORD_VARIABLE
+                        env.GIT_REPO_URL = GIT_REPO_URL
+                        env.DESTINATION_PATH = DESTINATION_PATH
+                    
+                    echo "Credential_ID in the Credentials stage after defining as env.: ${env.GIT_CREDENTIALS_ID}"
+                }
+		    }
+        }
 
         /**
             Cloning the repository to the local temporary storage
