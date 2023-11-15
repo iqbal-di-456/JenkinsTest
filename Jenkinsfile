@@ -8,42 +8,13 @@ pipeline {
     environment {
         // Define Git repository URL and desired destination path
         // Credentials for cloning the repository
-        // GIT_CREDENTIALS_ID = ''
-        // GIT_USERNAME_VARIABLE = ''
-        // GIT_PASSWORD_VARIABLE = ''
-        // GIT_REPO_URL = ''
+        GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
+        GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
+        GIT_PASSWORD_VARIABLE = 'Shinigami@456'
+        GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
 
-        // DESTINATION_PATH = ''
+        DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
         batch_current = "${env.BRANCH_NAME}"
-        when {
-                expression { return batch_current == 'dev' || batch_current == 'qa' }
-            }
-            steps {
-                script {
-                    // Select credentials based on the branch
-					if (batch_current == 'dev') {
-                        GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
-                        GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
-                        GIT_PASSWORD_VARIABLE = 'Shinigami@456'
-                        GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
-                        DESTINATION_PATH = 'D:/Test'
-					} else if (batch_current == 'qa') {
-                        GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
-                        GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
-                        GIT_PASSWORD_VARIABLE = 'Shinigami@456'
-                        GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
-                        DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
-                    }
-                    // Set the credential as environment variables for later stages
-                        // env.GIT_CREDENTIALS_ID = GIT_CREDENTIALS_ID
-                        // env.GIT_USERNAME_VARIABLE = GIT_USERNAME_VARIABLE
-                        // env.GIT_PASSWORD_VARIABLE = GIT_PASSWORD_VARIABLE
-                        // env.GIT_REPO_URL = GIT_REPO_URL
-                        // env.DESTINATION_PATH = DESTINATION_PATH
-                }
-		    }
-
-        
     }
 
     stages {
@@ -57,9 +28,9 @@ pipeline {
             }
         }
 
-        /**
-			Defining the credentials to be used based on the current Branch
-		**/
+        // /**
+		// 	Defining the credentials to be used based on the current Branch
+		// **/
 		// stage('Credentials') {
         //     when {
         //         expression { return env.BRANCH_NAME == 'dev' || env.BRANCH_NAME == 'qa' }
@@ -98,9 +69,6 @@ pipeline {
                 script {
                      // Echo to verify the value of GIT_CREDENTIALS_ID
                     echo "Credential_ID before withCredentials: ${env.GIT_CREDENTIALS_ID}"
-
-                    // Use a different variable within the withCredentials block
-                    // def credentialsId = env.GIT_CREDENTIALS_ID
 
                     // Clone the repository using credentials
                     withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS_ID, usernameVariable: env.GIT_USERNAME_VARIABLE, passwordVariable: env.GIT_PASSWORD_VARIABLE)]) {
