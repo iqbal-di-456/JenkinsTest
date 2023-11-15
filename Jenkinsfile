@@ -1,20 +1,42 @@
 pipeline {
     agent any
 
+    options {
+          buildBlocker (useBuildBlocker: true, blockLevel: 'GLOBAL', blockingJobs: 'my-test-jenkins/.*')
+    }
+
     environment {
         // Define Git repository URL and desired destination path
-        // GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
+        // Credentials for cloning the repository
+        GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
+        GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
+        GIT_PASSWORD_VARIABLE = 'Shinigami@456'
+        GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
+
         DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
+        batch_current = "${env.BRANCH_NAME}"
     }
 
     stages {
 
+        /**
+            Cleaning the workspace by removing the old file from temporary storage
+        **/
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        /**
+            Cloning the repository to the local temporary storage
+        **/
         stage('Clone Repository') {
             steps {
                 script {
-                    // Clone the repository
-                    withCredentials([usernamePassword(credentialsId: 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c', usernameVariable: 'miqbal@datainnovations.com', passwordVariable: 'Shinigami@456')]) {
-                        checkout([$class: 'GitSCM', branches: [[name: "${env.BRANCH_NAME}"]], userRemoteConfigs: [[url: 'https://github.com/iqbal-di-456/JenkinsTest.git', credentialsId: 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c']]])
+                    // Clone the repository using credentials
+                    withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS_ID, usernameVariable: env.GIT_USERNAME_VARIABLE, passwordVariable: env.GIT_PASSWORD_VARIABLE)]) {
+                        checkout([$class: 'GitSCM', branches: [[name: "${env.BRANCH_NAME}"]], userRemoteConfigs: [[url: GIT_REPO_URL, credentialsId: env.GIT_CREDENTIALS_ID]]])
                     }
                 }
             }
@@ -23,14 +45,11 @@ pipeline {
         stage('Copy Files') {
             steps {
                 script {
-                    // Define source path (current workspace)
-                    def sourcePath = env.WORKSPACE
-
                     // Create the destination directory if it doesn't exist
                     bat "if not exist \"${env.DESTINATION_PATH}\" mkdir \"${env.DESTINATION_PATH}\""
 
                     // Copy files from source to destination
-                    bat "xcopy /S /Y \"${sourcePath}\" \"${env.DESTINATION_PATH}\""
+                    bat "xcopy /S /Y \"${env.WORKSPACE}\" \"${env.DESTINATION_PATH}\""
                 }
             }
         }
@@ -45,40 +64,48 @@ pipeline {
                 echo "Current branch is: ${env.GIT_BRANCH}  - usign GIT_BRANCH tag"
 
                 script {
-                    echo 'Testing script'
-                    if (env.BRANCH_NAME == 'dev') {
-                        echo 'Condition Executed Successfully...'
+                    if (env.BRANCH_NAME == 'dev' || env.BRANCH_NAME == 'qa') {
+                            def myVariable = env.BRANCH_NAME == 'dev' ? 'run-dev-build-script' : 'run-qa-build-script'
+                            echo "URL using myVariable: http://3.18.204.118:8000/${myVariable}"
+                            echo "URL using BRANCH_NAME: http://3.18.204.118:8000/run-${env.BRANCH_NAME}-build-script"
+                        } else {
+                            echo "Branch name is not 'dev or qa'."
                         }
-                    if (env.BRANCH_NAME == 'qa') {
-                        echo 'Condition Executed Successfully...'
-                        }
-                    else {
-                        echo "Skipping Condition for ${env.BRANCH_NAME} env"
-                        }
-                    }
-
-                script {
-                    if (env.BRANCH_NAME == 'dev') {
-                        // Set a variable with the desired value
-                        def myVariable = 'run-dev-build-script'
-                        
-                        // Print the variable
-                        echo "http://3.18.204.118:8000/${myVariable}"
-                        echo "http://3.18.204.118:8000/run-${env.BRANCH_NAME}-build-script"
-                    }
-                    if (env.BRANCH_NAME == 'qa') {
-                        // Set a variable with the desired value
-                        def myVariable = 'run-qa-build-script'
-                        
-                        // Print the variable
-                        echo "http://3.18.204.118:8000/${myVariable}"
-                        echo "http://3.18.204.118:8000/run-${env.BRANCH_NAME}-build-script"
-                    } else {
-                        echo "Branch name is not 'qa'."
-                    }
                 }
             }
 		}
+
+        
+        stage('Shell Command Check') {
+            steps {
+                // script {
+                //     def currentBranch = env.GIT_BRANCH
+                //     sh "echo 'Current branch is: ${currentBranch}'"
+                //     sh "echo 'http://3.18.204.118:8000/run-${env.BRANCH_NAME}-build-script)'"
+                    
+                //     sh "echo 'http://3.18.204.118:8000/run-${currentBranch}-build-script'"
+                // }
+                echo "Testing bat command"
+                script {
+                    def test = env.BRANCH_NAME
+                    echo "echoing this to test : ${test}"
+                    
+                    // Call the method from the .js file
+                    bat """node run-${test}-script.js
+                    """
+
+                    bat '''                    
+                    node run-%batch_current%-script.js
+                    '''
+
+                    // sh '''
+                    // git rev-parse --abbrev-ref HEAD
+                    // set test = git rev-parse --abbrev-ref HEAD
+                    // node run-%test%-script.js
+                    // '''
+                }
+            }
+        }
     }
 
     post {
