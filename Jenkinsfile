@@ -34,9 +34,15 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 script {
+                    // Echo to verify the value of GIT_CREDENTIALS_ID
+                    echo "Credential_ID before withCredentials: ${env.GIT_CREDENTIALS_ID}"
                     // Clone the repository using credentials
                     withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS_ID, usernameVariable: env.GIT_USERNAME_VARIABLE, passwordVariable: env.GIT_PASSWORD_VARIABLE)]) {
                         checkout([$class: 'GitSCM', branches: [[name: "${env.BRANCH_NAME}"]], userRemoteConfigs: [[url: GIT_REPO_URL, credentialsId: env.GIT_CREDENTIALS_ID]]])
+                        {
+                            echo "Username: ${env.GIT_USERNAME_VARIABLE}"
+                            echo "Password: ${env.GIT_PASSWORD_VARIABLE}"
+                        }
                     }
                 }
             }
