@@ -136,15 +136,22 @@ pipeline {
                 // }
                 echo "Testing bat command"
                 script {
+                    def buildForEnvironment = ''
+                    if (env.BRANCH_NAME == 'dev') {
+                    buildForEnvironment = 'prod'   
+                    else {
+                        buildForEnvironment = env.BRANCH_NAME
+                    }    
+
                     def test = env.BRANCH_NAME
-                    echo "echoing this to test : ${test}"
+                    echo "echoing this to test : ${buildForEnvironment}"
                     
                     // Call the method from the .js file
-                    bat """node run-${test}-script.js
+                    bat """node run-${buildForEnvironment}-script.js
                     """
 
                     bat '''                    
-                    node run-%batch_current%-script.js
+                    node run-%buildForEnvironment%-script.js
                     '''
 
                     // sh '''

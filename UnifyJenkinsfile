@@ -10,6 +10,9 @@ pipeline {
         AWS_ACCOUNT_ID = ""
         CLOUDFRONT_DISTRIBUTION_ID = "" 
         S3_BUCKET = ""
+
+        BRANCH_NAME = "${env.BRANCH_NAME}"
+
     }
     stages {
         /**
@@ -38,7 +41,7 @@ pipeline {
                     sshagent(['EC2-Mac']) {
                         sh '''
                             git fetch 
-                            git checkout dev
+                            git checkout %BRANCH_NAME%
                             git pull
                             7z a -r mobileapp.zip *
                             scp mobileapp.zip ec2-user@10.7.0.58:~/Desktop/
@@ -97,12 +100,18 @@ pipeline {
         stage('Deploy MobileApp to Remote Server') {
             steps {
                 script {
-                    
+                    def buildForEnvironment = ''
+                    if (env.BRANCH_NAME == 'master') {
+                    buildForEnvironment = 'prod'   
+                    else () {
+                        buildForEnvironment = env.BRANCH_NAME
+                    }             
+              }
                     sshagent(['EC2-Mac']) {
                          sh 'ssh ec2-user@10.7.0.58 < script_build.sh'
                     }
                     sh '''
-                        http_status=$(curl -o /dev/null -I -sw "%{http_code}" --location http://10.7.0.58:8000/run-dev-build-script)
+                        http_status=$(curl -o /dev/null -I -sw "%{http_code}" --location http://10.7.0.58:8000/run-%BRANCH_NAME%-build-script)
                         if [ "$http_status" -eq 500 ]; then
                             echo "Received HTTP status code 500. Exiting with an error."
                             exit 1  # Exit the script with an error code
@@ -190,7 +199,7 @@ pipeline {
                     sshagent(['EC2-Mac']) {
                         sh '''
                             git fetch 
-                            git checkout dev
+                            git checkout %BRANCH_NAME%
                             git pull
                         '''
                     }
@@ -207,7 +216,7 @@ pipeline {
                          sh 'ssh ec2-user@10.7.0.58 < script_deploy.sh'
                     }
                      sh '''
-                        http_status=$(curl -o /dev/null -I -sw "%{http_code}" --location http://10.7.0.58:8000/run-dev-deploy-script)
+                        http_status=$(curl -o /dev/null -I -sw "%{http_code}" --location http://10.7.0.58:8000/run-%BRANCH_NAME%-deploy-script)
                         if [ "$http_status" -eq 500 ]; then
                             echo "Received HTTP status code 500. Exiting with an error."
                             exit 1  # Exit the script with an error code
