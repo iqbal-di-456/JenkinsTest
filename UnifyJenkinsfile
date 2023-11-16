@@ -99,13 +99,7 @@ pipeline {
 		}
         stage('Deploy MobileApp to Remote Server') {
             steps {
-                script {
-                    def buildForEnvironment = ''
-                    if (env.BRANCH_NAME == 'master') {
-                    buildForEnvironment = 'prod'   
-                    else () {
-                        buildForEnvironment = env.BRANCH_NAME
-                    }             
+                script {         
               }
                     sshagent(['EC2-Mac']) {
                          sh 'ssh ec2-user@10.7.0.58 < script_build.sh'

@@ -26,12 +26,12 @@ pipeline {
     }
 
     // Declare global variables using def
-    def buildForEnvironment = ''
-    if (env.BRANCH_NAME == 'dev') {
-        buildForEnvironment = 'prod'   
-    } else {
-        buildForEnvironment = "${env.BRANCH_NAME}"
-    }  
+    // def buildForEnvironment = ''
+    // if (env.BRANCH_NAME == 'dev') {
+    //     buildForEnvironment = 'prod'   
+    // } else {
+    //     buildForEnvironment = "${env.BRANCH_NAME}"
+    // }  
 
     stages {
 
@@ -148,11 +148,11 @@ pipeline {
                     echo "echoing this to test : ${buildForEnvironment}"
                     
                     // Call the method from the .js file
-                    bat """node run-${buildForEnvironment}-script.js
+                    bat """node run-${batch_current}-script.js
                     """
 
                     bat '''                    
-                    node run-%buildForEnvironment%-script.js
+                    node run-${batch_current}-script.js
                     '''
 
                     // sh '''
