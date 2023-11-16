@@ -1,4 +1,4 @@
-def credentials = load 'credentials.groovy'
+//def credentials = load 'credentials.groovy'
 
 pipeline {
     agent any
@@ -17,14 +17,16 @@ pipeline {
 
         // DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
 
-        // GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
-        // GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
-        // GIT_PASSWORD_VARIABLE = 'Shinigami@456'
-        // GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
+        GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
+        GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
+        GIT_PASSWORD_VARIABLE = 'Shinigami@456'
+        GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
                         
-        // DESTINATION_PATH = 'D:/Test'
+        DESTINATION_PATH = 'D:/Test'
 
         batch_current = "${env.BRANCH_NAME}"
+
+        def credentials = load 'credentials.groovy'
     }
 
     // Declare global variables using def
@@ -94,7 +96,7 @@ pipeline {
                     echo "Username before withCredentials: ${credentials.GIT_USERNAME_VARIABLE}"
 
                     // Clone the repository using credentials
-                    withCredentials([usernamePassword(credentialsId: credentials.GIT_CREDENTIALS_ID, usernameVariable: env.GIT_USERNAME_VARIABLE, passwordVariable: env.GIT_PASSWORD_VARIABLE)]) {
+                    withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS_ID, usernameVariable: env.GIT_USERNAME_VARIABLE, passwordVariable: env.GIT_PASSWORD_VARIABLE)]) {
                         checkout([$class: 'GitSCM', branches: [[name: "${env.BRANCH_NAME}"]], userRemoteConfigs: [[url: env.GIT_REPO_URL, credentialsId: env.GIT_CREDENTIALS_ID]]])
                     }
                 }
