@@ -25,6 +25,14 @@ pipeline {
         batch_current = "${env.BRANCH_NAME}"
     }
 
+    // Declare global variables using def
+    def buildForEnvironment = ''
+    if (env.BRANCH_NAME == 'dev') {
+        buildForEnvironment = 'prod'   
+    } else {
+        buildForEnvironment = "${env.BRANCH_NAME}"
+    }  
+
     stages {
 
         /**
@@ -136,14 +144,6 @@ pipeline {
                 // }
                 echo "Testing bat command"
                 script {
-                    def buildForEnvironment = ''
-                    if (env.BRANCH_NAME == 'dev') {
-                    buildForEnvironment = 'prod'   
-                    }
-                    else {
-                        buildForEnvironment = "${env.BRANCH_NAME}"
-                    }    
-
                     def test = env.BRANCH_NAME
                     echo "echoing this to test : ${buildForEnvironment}"
                     
