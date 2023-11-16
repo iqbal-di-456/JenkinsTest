@@ -1,5 +1,5 @@
 return {
-    def BRANCH_NAME = bat(script: 'git rev-parse --abbrev-ref HEAD', returnStatus: true).trim()
+    def BRANCH_NAME = bat(script: 'git rev-parse --abbrev-ref HEAD', returnStatus: true).toString().trim()
     echo "Current Branch: ${BRANCH_NAME}"
     
     // Conditional check using 'if' statement
