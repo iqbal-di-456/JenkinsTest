@@ -1,11 +1,11 @@
 return {
-    def BRANCH_NAME = bat(script: 'git rev-parse --abbrev-ref HEAD', returnStatus: true).toString().trim()
+    // def BRANCH_NAME = bat(script: 'git rev-parse --abbrev-ref HEAD', returnStatus: true).toString().trim()
 
-    if (BRANCH_NAME == 'HEAD') {
-    // Repository is in a detached HEAD state, get the branch name from the ref file
-    BRANCH_NAME = bat(script: 'git rev-parse --symbolic-full-name --abbrev-ref HEAD', returnStatus: true).toString().trim()
-}
-    println "Current Branch: ${BRANCH_NAME}"
+    // if (BRANCH_NAME == 'HEAD') {
+    // // Repository is in a detached HEAD state, get the branch name from the ref file
+    // BRANCH_NAME = bat(script: 'git rev-parse --symbolic-full-name --abbrev-ref HEAD', returnStatus: true).toString().trim()
+    // }
+    println "Current Branch: ${env.BRANCH_NAME}"
     
     // Conditional check using 'if' statement
     if (BRANCH_NAME == 'dev') {
