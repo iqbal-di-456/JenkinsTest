@@ -140,7 +140,7 @@ pipeline {
                     if (env.BRANCH_NAME == 'dev') {
                     buildForEnvironment = 'prod'   
                     else {
-                        buildForEnvironment = env.BRANCH_NAME
+                        buildForEnvironment = "${env.BRANCH_NAME}"
                     }    
 
                     def test = env.BRANCH_NAME
