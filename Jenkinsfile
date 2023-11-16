@@ -1,3 +1,5 @@
+def credentials = load 'credentials.groovy'
+
 pipeline {
     agent any
 
@@ -15,12 +17,12 @@ pipeline {
 
         // DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
 
-        GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
-        GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
-        GIT_PASSWORD_VARIABLE = 'Shinigami@456'
-        GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
+        // GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
+        // GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
+        // GIT_PASSWORD_VARIABLE = 'Shinigami@456'
+        // GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
                         
-        DESTINATION_PATH = 'D:/Test'
+        // DESTINATION_PATH = 'D:/Test'
 
         batch_current = "${env.BRANCH_NAME}"
     }
@@ -135,13 +137,6 @@ pipeline {
         
         stage('Shell Command Check') {
             steps {
-                // script {
-                //     def currentBranch = env.GIT_BRANCH
-                //     sh "echo 'Current branch is: ${currentBranch}'"
-                //     sh "echo 'http://3.18.204.118:8000/run-${env.BRANCH_NAME}-build-script)'"
-                    
-                //     sh "echo 'http://3.18.204.118:8000/run-${currentBranch}-build-script'"
-                // }
                 echo "Testing bat command"
                 script {
                     def test = env.BRANCH_NAME
@@ -152,13 +147,11 @@ pipeline {
                     """
 
                     bat '''                    
-                    node run-${batch_current}-script.js
+                    node run-%batch_current%-script.js
                     '''
 
                     // sh '''
-                    // git rev-parse --abbrev-ref HEAD
-                    // set test = git rev-parse --abbrev-ref HEAD
-                    // node run-%test%-script.js
+                    // node run-${batch_current}-script.js
                     // '''
                 }
             }
