@@ -148,8 +148,8 @@ pipeline {
                     //     buildForEnvironment = "${env.BRANCH_NAME}"
                     // } 
 
-                    def test = env.BRANCH_NAME
-                    echo "echoing this to test : ${buildForEnvironment}"
+                    // def test = env.BRANCH_NAME
+                    // echo "echoing this to test : ${test}"
                     
                     // Call the method from the .js file
                     bat """node run-${batch_current}-script.js
