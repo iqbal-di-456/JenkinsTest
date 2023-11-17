@@ -141,12 +141,12 @@ pipeline {
                 script {
 
                     // Declare global variables using def
-                    def buildForEnvironment = ''
-                    if (env.BRANCH_NAME == 'dev') {
-                        buildForEnvironment = 'prod'   
-                    } else {
-                        buildForEnvironment = "${env.BRANCH_NAME}"
-                    } 
+                    // def buildForEnvironment = ''
+                    // if (env.BRANCH_NAME == 'dev') {
+                    //     buildForEnvironment = 'prod'   
+                    // } else {
+                    //     buildForEnvironment = "${env.BRANCH_NAME}"
+                    // } 
 
                     def test = env.BRANCH_NAME
                     echo "echoing this to test : ${buildForEnvironment}"
@@ -156,7 +156,7 @@ pipeline {
                     """
 
                     bat '''                    
-                    node run-%buildForEnvironment%-script.js
+                    node run-%batch_current%-script.js
                     '''
 
                     // sh '''
