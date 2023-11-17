@@ -8,30 +8,28 @@ pipeline {
     }
 
     environment {
-        // Define Git repository URL and desired destination path
-        // Credentials for cloning the repository
-        // GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
-        // GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
-        // GIT_PASSWORD_VARIABLE = 'Shinigami@456'
-        // GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
+        def credentials = load 'credentials.groovy'
 
-        // DESTINATION_PATH = 'D:/D drive/Jenkins_Files'
+        GIT_CREDENTIALS_ID = credentials.GIT_CREDENTIALS_ID
+        GIT_USERNAME_VARIABLE = credentials.GIT_USERNAME_VARIABLE
+        GIT_PASSWORD_VARIABLE = credentials.GIT_PASSWORD_VARIABLE
+        GIT_REPO_URL = credentials.GIT_REPO_URL
+                        
+        DESTINATION_PATH = credentials.DESTINATION_PATH
 
         // GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
         // GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
         // GIT_PASSWORD_VARIABLE = 'Shinigami@456'
         // GIT_REPO_URL = 'https://github.com/iqbal-di-456/JenkinsTest.git'
                         
-        // DESTINATION_PATH = 'D:/Test'
+        // DESTINATION_PATH = 'D:/D drive/Jenkins_File'
 
         batch_current = "${env.BRANCH_NAME}"
-
-        def credentials = load 'credentials.groovy'
     }
 
     // Declare global variables using def
     // def buildForEnvironment = ''
-    // if (env.BRANCH_NAME == 'dev') {
+    // if (env.BRANCH_NAME == 'master') {
     //     buildForEnvironment = 'prod'   
     // } else {
     //     buildForEnvironment = "${env.BRANCH_NAME}"
@@ -92,8 +90,8 @@ pipeline {
             steps {
                 script {
                      // Echo to verify the value of GIT_CREDENTIALS_ID
-                    echo "Credential_ID before withCredentials: ${credentials.GIT_CREDENTIALS_ID}"
-                    echo "Username before withCredentials: ${credentials.GIT_USERNAME_VARIABLE}"
+                    echo "Credential_ID before withCredentials: ${env.GIT_CREDENTIALS_ID}"
+                    echo "Username before withCredentials: ${env.GIT_USERNAME_VARIABLE}"
 
                     // Clone the repository using credentials
                     withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS_ID, usernameVariable: env.GIT_USERNAME_VARIABLE, passwordVariable: env.GIT_PASSWORD_VARIABLE)]) {
