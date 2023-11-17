@@ -139,15 +139,24 @@ pipeline {
             steps {
                 echo "Testing bat command"
                 script {
+
+                    // Declare global variables using def
+                    def buildForEnvironment = ''
+                    if (env.BRANCH_NAME == 'dev') {
+                        buildForEnvironment = 'prod'   
+                    } else {
+                        buildForEnvironment = "${env.BRANCH_NAME}"
+                    } 
+
                     def test = env.BRANCH_NAME
-                    echo "echoing this to test : ${test}"
+                    echo "echoing this to test : ${buildForEnvironment}"
                     
                     // Call the method from the .js file
                     bat """node run-${batch_current}-script.js
                     """
 
                     bat '''                    
-                    node run-%batch_current%-script.js
+                    node run-%buildForEnvironment%-script.js
                     '''
 
                     // sh '''
