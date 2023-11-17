@@ -10,12 +10,12 @@ pipeline {
     environment {
         def credentials = load 'credentials.groovy'
 
-        GIT_CREDENTIALS_ID = ${credentials.GIT_CREDENTIALS_ID}
-        GIT_USERNAME_VARIABLE = ${credentials.GIT_USERNAME_VARIABLE}
-        GIT_PASSWORD_VARIABLE = ${credentials.GIT_PASSWORD_VARIABLE}
-        GIT_REPO_URL = ${credentials.GIT_REPO_URL}
+        GIT_CREDENTIALS_ID = "${credentials.GIT_CREDENTIALS_ID}"
+        GIT_USERNAME_VARIABLE = "${credentials.GIT_USERNAME_VARIABLE}"
+        GIT_PASSWORD_VARIABLE = "${credentials.GIT_PASSWORD_VARIABLE}"
+        GIT_REPO_URL = "${credentials.GIT_REPO_URL}"
                         
-        DESTINATION_PATH = ${credentials.DESTINATION_PATH}
+        DESTINATION_PATH = "${credentials.DESTINATION_PATH}"
 
         // GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
         // GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
