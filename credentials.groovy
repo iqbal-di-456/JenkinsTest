@@ -22,12 +22,21 @@ return {
         DESTINATION_PATH = 'D:/D drive/Jenkins_File'
     }
 
+    //Declare global variables using def
+    def buildForEnvironment = ''
+    if (env.BRANCH_NAME == 'dev') {
+        buildForEnvironment = 'prod'   
+    } else {
+        buildForEnvironment = "${env.BRANCH_NAME}"
+    } 
+
     // Return a map with the variables
     return [
         GIT_CREDENTIALS_ID: GIT_CREDENTIALS_ID,
         GIT_USERNAME_VARIABLE: GIT_USERNAME_VARIABLE,
         GIT_PASSWORD_VARIABLE: GIT_PASSWORD_VARIABLE,
         GIT_REPO_URL: GIT_REPO_URL,
-        DESTINATION_PATH: DESTINATION_PATH
+        DESTINATION_PATH: DESTINATION_PATH,
+        buildForEnvironment: buildForEnvironment
     ]
 }()

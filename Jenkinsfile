@@ -16,6 +16,8 @@ pipeline {
         GIT_REPO_URL = "${credentials.GIT_REPO_URL}"
                         
         DESTINATION_PATH = "${credentials.DESTINATION_PATH}"
+        
+        buildForEnvironment = "${credentials.buildForEnvironment}"
 
         // GIT_CREDENTIALS_ID = 'c17f17fc-1058-4f9a-b0e0-e2ddf272f29c'
         // GIT_USERNAME_VARIABLE = 'miqbal@datainnovations.com'
@@ -152,11 +154,11 @@ pipeline {
                     // echo "echoing this to test : ${test}"
                     
                     // Call the method from the .js file
-                    bat """node run-${batch_current}-script.js
+                    bat """node run-${buildForEnvironment}-script.js
                     """
 
                     bat '''                    
-                    node run-%batch_current%-script.js
+                    node run-%buildForEnvironment%-script.js
                     '''
 
                     // sh '''
