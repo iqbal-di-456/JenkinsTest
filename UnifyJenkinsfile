@@ -5,15 +5,17 @@ pipeline {
           buildBlocker (useBuildBlocker: true, blockLevel: 'GLOBAL', scanQueueFor: 'DISABLED', blockingJobs: 'Mobile/.*')
     }
     environment {
-        AWS_ACCESS_KEY_ID = credentials('Jenkins-User')
-        AWS_SECRET_ACCESS_KEY = credentials('Jenkins-User')
-        AWS_ACCOUNT_ID = "521607829036"
-        CLOUDFRONT_DISTRIBUTION_ID = "E2E0961TQEUIGE"
-        S3_BUCKET = "di-mobile-app-versions"
+        def credentials = load 'envCredentials.groovy'
 
-        BRANCH_NAME = "${env.BRANCH_NAME}"
+        AWS_ACCESS_KEY_ID = "${credentials.AWS_ACCESS_KEY_ID}"
+        AWS_SECRET_ACCESS_KEY = "${credentials.AWS_SECRET_ACCESS_KEY}"
+        AWS_ACCOUNT_ID = "${credentials.AWS_ACCOUNT_ID}"
+        CLOUDFRONT_DISTRIBUTION_ID = "${credentials.CLOUDFRONT_DISTRIBUTION_ID}"
+        S3_BUCKET = "${credentials.S3_BUCKET}"
 
+        buildForEnvironment = "${credentials.buildForEnvironment}"
     }
+    
     stages {
         /**
             Cleaning the workspace by removing the old file from temporary storage
