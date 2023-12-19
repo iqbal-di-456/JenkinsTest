@@ -167,6 +167,21 @@ pipeline {
                 }
             }
         }
+
+        stage('Install Dependencies, Load Environment Variables and Test') {
+            steps {
+                script {
+                    // Install dotenv package
+                    bat 'npm install dotenv'
+
+                    // Load environment variables from .env file
+                    bat 'node -e "require(\'dotenv\').config({ path: \'.env\' })"'
+
+                    // Access environment variables
+                    bat 'echo %ENV%'
+                }
+            }
+        }
     }
 
     post {
