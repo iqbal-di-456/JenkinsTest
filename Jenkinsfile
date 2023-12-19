@@ -180,7 +180,7 @@ pipeline {
                     // Access environment variables
                     bat 'echo %ENV%'
 
-                    echo "${ENV}"
+                    echo "ENV: ${env.ENV}"
                 }
             }
         }
