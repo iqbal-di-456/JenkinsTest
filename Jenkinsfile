@@ -175,9 +175,6 @@ pipeline {
                     bat 'npm install dotenv'
 
                     // Load environment variables from .env file
-                    // bat 'npx dotenv-cli -e .env --debug'
-
-                    // Load environment variables from .env file
                     script {
                         // Read the .env file and set environment variables
                         load('.env')
