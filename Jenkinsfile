@@ -172,13 +172,14 @@ pipeline {
             steps {
                 script {
                     // Install dotenv package
-                    bat 'npm install dotenv'
+                    bat 'npm install dotenv-cli'
+                    bat 'npx dotenv-cli'
 
                     // Load environment variables from .env file
-                    bat 'node -e "require(\'dotenv\').config({ path: \'.env\' })"'
+                    //bat 'node -e "require(\'dotenv\').config({ path: \'.env\' })"'
 
                     // Access environment variables
-                    bat 'echo %ENV%'
+                    //bat 'echo %ENV%'
 
                     echo "ENV: ${env.ENV}"
                 }
