@@ -172,22 +172,19 @@ pipeline {
             steps {
                 script {
                     // Install dotenv package
-                    bat 'npm install dotenv-cli'
+                    bat 'npm install dotenv'
 
                     // Load environment variables from .env file
-                    bat 'npx dotenv-cli -e .env --debug'
+                    // bat 'npx dotenv-cli -e .env --debug'
 
-                    // Load environment variables into Jenkins environment
+                    // Load environment variables from .env file
                     script {
-                        // Use withEnv to set environment variables for the entire stage
-                        withEnv(['ENV=.env']) {
-                            // Access environment variables
-                            echo "ENV: ${ENV}"
-                        }
+                        // Read the .env file and set environment variables
+                        load('.env')
                     }
 
                     // Access environment variables
-                    // echo "ENV: ${env.ENV}"
+                    echo "ENV: ${ENV}"
                 }
             }
         }
