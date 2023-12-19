@@ -179,11 +179,15 @@ pipeline {
 
                     // Load environment variables into Jenkins environment
                     script {
-                        load('.env')
+                        // Use withEnv to set environment variables for the entire stage
+                        withEnv(['ENV=.env']) {
+                            // Access environment variables
+                            echo "ENV: ${ENV}"
+                        }
                     }
 
                     // Access environment variables
-                    echo "ENV: ${env.ENV}"
+                    // echo "ENV: ${env.ENV}"
                 }
             }
         }
