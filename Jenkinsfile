@@ -179,6 +179,8 @@ pipeline {
 
                     // Access environment variables
                     bat 'echo %ENV%'
+
+                    echo "${ENV}"
                 }
             }
         }
