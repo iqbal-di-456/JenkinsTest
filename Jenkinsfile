@@ -179,7 +179,7 @@ pipeline {
 
                     // Load environment variables into Jenkins environment
                     script {
-                        load(.env)
+                        load('.env')
                     }
 
                     // Access environment variables
