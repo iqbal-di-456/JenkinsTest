@@ -1,7 +1,9 @@
 //def credentials = load 'credentials.groovy'
 
 pipeline {
-    agent any
+    agent {
+        label 'test'
+    }
 
     options {
           buildBlocker (useBuildBlocker: true, blockLevel: 'GLOBAL', blockingJobs: 'my-test-jenkins/.*')
