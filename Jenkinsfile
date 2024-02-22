@@ -7,6 +7,9 @@ pipeline {
 
     options {
           buildBlocker (useBuildBlocker: true, blockLevel: 'GLOBAL', blockingJobs: 'my-test-jenkins/.*')
+          timestamps() // This will log the start time of each build
+          echo "agent name used: ${env.NNODE_NAME}"
+          echo "label used: ${env.NODE_LABELS}"
     }
 
     environment {
