@@ -1,9 +1,7 @@
 //def credentials = load 'credentials.groovy'
 
 pipeline {
-    agent {
-        label 'test'
-    }
+    agent any
 
     options {
           buildBlocker (useBuildBlocker: true, blockLevel: 'GLOBAL', blockingJobs: 'my-test-jenkins/.*')
@@ -35,7 +33,7 @@ pipeline {
     tools {
         nodejs "NodeJS"
     }
-    
+
     // Declare global variables using def
     // def buildForEnvironment = ''
     // if (env.BRANCH_NAME == 'master') {
