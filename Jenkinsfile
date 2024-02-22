@@ -32,6 +32,10 @@ pipeline {
         batch_current = "${env.BRANCH_NAME}"
     }
 
+    tools {
+        nodejs "NodeJS"
+    }
+    
     // Declare global variables using def
     // def buildForEnvironment = ''
     // if (env.BRANCH_NAME == 'master') {
