@@ -185,6 +185,9 @@ pipeline {
 
                     // Access environment variables
                     echo "ENV: ${ENV}"
+
+                echo "agent name used: ${env.NODE_NAME}"
+                echo "label used: ${env.NODE_LABELS}"
                 }
             }
         }
@@ -199,11 +202,6 @@ pipeline {
             // You can add post-build actions here for failure
             echo 'build failed'
         }
-        script {
-                echo "agent name used: ${env.NNODE_NAME}"
-                echo "label used: ${env.NODE_LABELS}"
-        }
-
     }
 
 }
